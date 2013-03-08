@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Main Page</title>
+        <link rel="stylesheet" type="text/css" href="unity.css">
+    </head>
+    <body>
+
+        <div id="nav">
+            <h1>Unity</h1>
+            <a href="#">Main</a> |
+            <a href="#view1">1st Internal</a> |
+            <a href="#view2">2nd Internal</a> |
+            <a href="one.html">1st External</a> |
+            <a href="two.html">2nd External</a>
+        </div>
+
+        <hr/>
+
+        <div data-role="appBody">
+            <div data-role="view" id="initialView">
+                <h1>I am the main view!</h1>
+            </div>
+
+            <div data-role="view" id="view1" class="testing">
+                <h1>I am view 1!</h1>
+            </div>
+
+            <div data-role="view" id="view2">
+                <h1>I am view 2!</h1>
+            </div>
+        </div>
+
+        <script src="unity.js"></script>
+    </body>
+</html>
