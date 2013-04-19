@@ -3,8 +3,9 @@
     var unity = window.unity || (window.unity = {});
 
     var divs = document.getElementsByTagName("div"), //All div elements on the main html file.
+
+    //This function takes care of hiding views both at initialization and whenever a user switches views.
         hideViews = function () {
-            //This function takes care of hiding views both at initialization and whenever a user switches views.
             for (i = 0; i < divs.length; i++) {
                 if (divs[i].getAttribute("data-role") === "view") {
                     //Don't hide the first div that is a view.
@@ -22,12 +23,12 @@
                 }
             }
         },
+
         checkRefresh = function (hash) {
             //If a hash exists on refresh simulate a hash change event.
             if (hash) {
                 window.onhashchange({newURL: hash});
             }
-            ;
         },
         i; //Reusable counter
 
@@ -48,7 +49,7 @@
             }
         }
     } else {
-        alert("Your browser might not support certain functionality on this website. Please get the latest update for it.")
+        alert("Your browser might not support certain functionality on this website. Please update it.")
     }
 
     //Hide all views on initialization (other than the initial view) and check if user refreshed while not on the initial view.
