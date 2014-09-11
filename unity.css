@@ -1,3 +1,6 @@
-.hiddenView {
+[data-role="view"] {
     display: none;
+}
+.visibleView {
+    display: block;
 }

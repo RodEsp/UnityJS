@@ -1,59 +1,78 @@
 (function (window, document, undefined) {
     //Add unity as a global object
     var unity = window.unity || (window.unity = {});
+    unity.views = {};
 
     var divs = document.getElementsByTagName("div"), //All div elements on the main html file.
 
-    //This function takes care of hiding views both at initialization and whenever a user switches views.
-        hideViews = function () {
-            for (i = 0; i < divs.length; i++) {
-                if (divs[i].getAttribute("data-role") === "view") {
-                    //Don't hide the first div that is a view.
-                    if (divs.skipFirst && divs[i].className.indexOf("hiddenView") === -1) {
-                        //Avoid creating ugly class attributes such as " hiddenView" instead of "hiddenView"
-                        if (divs[i].className) {
-                            divs[i].className += " hiddenView";
+        view = null,
+
+        i, //Reusable counter
+
+        //This function takes care of showing views both at initialization and whenever a user switches views.
+        showViews = function () {
+            for (view in unity.views) {
+                if (unity.views.hasOwnProperty(view)) {
+                    view = unity.views[view];
+                    view.className = view.className.replace(/visibleView/g, "").trim();
+                }
+            }
+
+            for (view in unity.views) {
+                if (unity.views.hasOwnProperty(view)) {
+                    view = unity.views[view];
+                    if (unity.hash === "") {
+                        //Avoid creating ugly class attributes such as " visibleView" instead of "visibleView"
+                        if (unity.views.mainView.className) {
+                            unity.views.mainView.className += " visibleView";
                         } else {
-                            divs[i].className = "hiddenView";
+                            unity.views.mainView.className = "visibleView";
                         }
-                    } else if (!divs.skipFirst) {
-                        divs[i].className = divs[i].className.replace("hiddenView", "");
+                    } else if (view.id.match(unity.hash)) {
+                        //Avoid creating ugly class attributes such as " visibleView" instead of "visibleView"
+                        if (view.className) {
+                            view.className += " visibleView";
+                        } else {
+                            view.className = "visibleView";
+                        }
                     }
-                    divs.skipFirst = true;
                 }
             }
         },
 
         checkRefresh = function (hash) {
-            //If a hash exists on refresh simulate a hash change event.
-            if (hash) {
-                window.onhashchange({newURL: hash});
+            //Simulate a hash change event.
+            window.onhashchange({newURL: hash});
+        };
+
+    //Save all the views the page loaded within Unity.
+    for (i = 0; i < divs.length; i++) {
+        if (divs[i].getAttribute("data-role") === "view") {
+            //Save a reference to the first view.
+            if (Object.keys(unity.views).length === 0) {
+                unity.views.mainView = divs[i];
             }
-        },
-        i; //Reusable counter
+            unity.views[divs[i].id] = divs[i];
+        }
+    }
 
     //Check for onhashchange support
     if ("onhashchange" in window) {
         window.onhashchange = function (event) {
+            unity.previousView = document.getElementById(unity.hash);
             //Display view that corresponds to the current hash
             unity.hash = event.newURL.slice(event.newURL.indexOf("#") + 1);
             if (unity.hash) {
                 unity.currentView = document.getElementById(unity.hash);
-                hideViews();
-                if (unity.currentView.className.match("hiddenView").length) {
-                    unity.currentView.className = unity.currentView.className.replace("hiddenView", "");
-                }
+                showViews();
             } else {
-                divs.skipFirst = undefined;
-                hideViews();
+                showViews();
             }
         }
     } else {
         alert("Your browser might not support certain functionality on this website. Please update it.")
     }
 
-    //Hide all views on initialization (other than the initial view) and check if user refreshed while not on the initial view.
-    hideViews();
     checkRefresh(location.hash);
 
 })(window, document);
