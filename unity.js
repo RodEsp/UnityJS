@@ -2,6 +2,18 @@
     //Add unity as a global object
     var unity = window.unity || (window.unity = {});
     unity.views = {};
+    unity.changeView = function (view) {
+        window.onhashchange({newURL: view});
+    };
+    unity.changeToNextView = function () {
+        unity.viewNames = Object.keys(unity.views);
+        for (var i = 0; i < unity.viewNames.length; i++) {
+            if (unity.currentView.id === unity.viewNames[i]) {
+                unity.changeView(i === unity.viewNames.length - 1 ? unity.viewNames[1] : unity.viewNames[i + 1]);
+                break;
+            }
+        }
+    };
 
     var divs = document.getElementsByTagName("div"), //All div elements on the main html file.
 
@@ -23,10 +35,10 @@
                     view = unity.views[view];
                     if (unity.hash === "") {
                         //Avoid creating ugly class attributes such as " visibleView" instead of "visibleView"
-                        if (unity.views.mainView.className) {
-                            unity.views.mainView.className += " visibleView";
+                        if (unity.views.firstView.className) {
+                            unity.views.firstView.className += " visibleView";
                         } else {
-                            unity.views.mainView.className = "visibleView";
+                            unity.views.firstView.className = "visibleView";
                         }
                     } else if (view.id.match(unity.hash)) {
                         //Avoid creating ugly class attributes such as " visibleView" instead of "visibleView"
@@ -50,7 +62,7 @@
         if (divs[i].getAttribute("data-role") === "view") {
             //Save a reference to the first view.
             if (Object.keys(unity.views).length === 0) {
-                unity.views.mainView = divs[i];
+                unity.views.firstView = divs[i];
             }
             unity.views[divs[i].id] = divs[i];
         }
@@ -63,9 +75,10 @@
             //Display view that corresponds to the current hash
             unity.hash = event.newURL.slice(event.newURL.indexOf("#") + 1);
             if (unity.hash) {
-                unity.currentView = document.getElementById(unity.hash);
+                unity.currentView = unity.views[unity.hash];
                 showViews();
             } else {
+                unity.currentView = unity.views[Object.keys(unity.views)[0]];
                 showViews();
             }
         }
