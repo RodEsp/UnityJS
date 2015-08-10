@@ -9,28 +9,38 @@
         <div id="nav">
             <h1>Unity</h1>
             <a href="#">Main</a> |
-            <a href="#view1">1st Internal</a> |
-            <a href="#view2">2nd Internal</a> |
+            <a href="#view1">1st View</a> |
+            <a href="#view2">2nd View</a> |
             <a href="one.html">1st External</a> |
             <a href="two.html">2nd External</a>
         </div>
 
         <hr/>
 
-        <div data-role="appBody">
+        <div>
             <div data-role="view" id="initialView">
                 <h1>I am the main view!</h1>
             </div>
 
-            <div data-role="view" id="view1" class="testing">
+            <div data-role="view" id="view1">
                 <h1>I am view 1!</h1>
             </div>
 
             <div data-role="view" id="view2">
                 <h1>I am view 2!</h1>
             </div>
+
+            <hr/>
+
+            <button id="prevViewButton" type="button">Previous View</button>
+            <button id="nextViewButton" type="button">Next View</button>
         </div>
 
         <script src="../unity.js"></script>
+
+        <script>
+            document.getElementById('prevViewButton').addEventListener('click', unity.changeToPreviousView);
+            document.getElementById('nextViewButton').addEventListener('click', unity.changeToNextView);
+        </script>
     </body>
 </html>
