@@ -4,7 +4,8 @@ UnityJS
 A very simple [single-page application](https://en.wikipedia.org/wiki/Single-page_application) framework.
 
 ## Usage
-Define each page in your HTML by encapsulating its content in a div that has `data-role="view"` as an attribute.
+1. Add [unity.css](./unity.css) as a stylesheet in your HTML's header.
+1. Define each page in your HTML by encapsulating its content in a div that has `data-role="view"` as an attribute.
 
 If you plan to separate each page into its own HTML file you will need to use a build tool like [Webpack](https://webpack.js.org/) to compile all your HTML into a single HTML file.
 
